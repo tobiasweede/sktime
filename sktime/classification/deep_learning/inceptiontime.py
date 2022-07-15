@@ -59,6 +59,7 @@ class InceptionTimeClassifier(BaseDeepClassifier):
             random_state=0,
             verbose=False,
             loss="categorical_crossentropy",
+            metrics=list(),
     ):
         _check_dl_dependencies(severity="error")
         super(InceptionTimeClassifier, self).__init__()
@@ -66,6 +67,7 @@ class InceptionTimeClassifier(BaseDeepClassifier):
         self.verbose = verbose
 
         # predefined
+        self.metrics = metrics
         self.loss = loss
         self.nb_filters = nb_filters
         self.use_residual = use_residual
@@ -110,7 +112,7 @@ class InceptionTimeClassifier(BaseDeepClassifier):
         model.compile(
             loss=self.loss,
             optimizer=keras.optimizers.Adam(),
-            metrics=["accuracy"],
+            metrics=self.metrics,
         )
 
         # if user hasn't provided a custom ReduceLROnPlateau via init already,
